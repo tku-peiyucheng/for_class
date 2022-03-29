@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppBody extends StatelessWidget {
 
-  BuildContext context;
+  late BuildContext context;
 
   @override
   Widget build(BuildContext context) {
