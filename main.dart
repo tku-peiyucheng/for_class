@@ -25,23 +25,23 @@ class MyHomePage extends StatelessWidget {
     );
 
     const images = <String>[
-      'assets/image_1.jpeg',
-      'assets/image_2.jpeg',
-      'assets/image_3.jpeg'
+      'img',
+      'img',
+      'img'
     ];
 
     var imgBrowser = _ImageBrowser(GlobalKey<_ImageBrowserState>(), images);
 
     // 建立App的操作畫面
     final previousBtn = FlatButton(
-      child: Image.asset('assets/previous.png'),
+      child: Image.asset('assets/img'),
       onPressed: () {
         imgBrowser.previousImage();
       },
     );
 
     final nextBtn = FlatButton(
-      child: Image.asset('assets/next.png'),
+      child: Image.asset('assets/img'),
       onPressed: () {
         imgBrowser.nextImage();
       },
