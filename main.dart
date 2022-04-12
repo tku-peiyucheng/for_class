@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,45 +26,41 @@ class MyHomePage extends StatelessWidget {
     );
 
     const images = <String>[
-      'img',
-      'img',
-      'img'
+      'assets/image_1.jpeg',
+      'assets/image_2.jpeg',
+      'assets/image_1.jpeg'
     ];
 
     var imgBrowser = _ImageBrowser(GlobalKey<_ImageBrowserState>(), images);
 
     // 建立App的操作畫面
     final previousBtn = FlatButton(
-      child: Image.asset('assets/img'),
+      child: Image.asset('assets/previous.png'),
       onPressed: () {
         imgBrowser.previousImage();
       },
     );
 
     final nextBtn = FlatButton(
-      child: Image.asset('assets/img'),
+      child: Image.asset('assets/next.png'),
       onPressed: () {
         imgBrowser.nextImage();
       },
     );
 
     final widget = Center(
-      child: Column(
-        children: <Widget>[
-          Container(
-            child: imgBrowser,
-            margin: EdgeInsets.symmetric(vertical: 10),
+      child: Stack(children: <Widget>[
+        Container(
+          child: imgBrowser,
+        ),
+        Container(
+          child: Row(
+            children: <Widget>[previousBtn, nextBtn],
+            mainAxisAlignment: MainAxisAlignment.center,
           ),
-          Container(
-            child: Row(
-              children: <Widget>[previousBtn, nextBtn],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ),
-            margin: EdgeInsets.symmetric(vertical: 10),
-          ),
-        ],
-        mainAxisAlignment: MainAxisAlignment.center,
-      ),
+          margin: EdgeInsets.symmetric(vertical: 10),
+        ),
+      ], alignment: Alignment.topCenter),
     );
 
     // 結合AppBar和App操作畫面
@@ -95,7 +92,14 @@ class _ImageBrowser extends StatefulWidget {
 class _ImageBrowserState extends State<_ImageBrowser> {
   @override
   Widget build(BuildContext context) {
-    Image img = Image.asset(widget._images[widget._imageIndex]);
+    var img = PhotoView(
+        imageProvider: AssetImage(widget._images[widget._imageIndex]),
+        minScale: PhotoViewComputedScale.contained * 0.6,
+        maxScale: PhotoViewComputedScale.covered,
+        enableRotation: true,
+        backgroundDecoration: BoxDecoration(
+          color: Colors.white,
+        ));
     return img;
   }
 
