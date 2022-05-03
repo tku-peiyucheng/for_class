@@ -23,36 +23,29 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     // 建立AppBar
     final appBar = AppBar(
-      title: Text('Animation Examples'),
+      title: Text('動畫範例'),
     );
 
     // 建立App的操作畫面
     final animationWrapper = _AnimationWrapper(
-        GlobalKey<_AnimationWrapperState>(), Alignment.bottomCenter);
+        GlobalKey<_AnimationWrapperState>(), 1.0);
 
-    var btn = RaisedButton.icon(
-      icon: Padding(
-        padding: EdgeInsets.only(left: 20, top: 10, right: 0, bottom: 10),
-        child: Icon(Icons.airplanemode_active, color: Colors.white),
-      ),
-      label: Padding(
-        padding: EdgeInsets.only(left: 0, top: 10, right: 20, bottom: 10),
-        child: Text('起飛', style: TextStyle(fontSize: 18, color: Colors.white),),
-      ),
+    var btn = RaisedButton(
+      child: Text('變透明', style: TextStyle(fontSize: 18, color: Colors.white),),
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       color: Colors.lightBlue,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       onPressed: () {
-        animationWrapper.setAlignment(Alignment.topCenter);
+        animationWrapper.setOpacity(0.0);
       },
     );
 
     final widget = Center(
       child: Container(
-        height: 500,
         child: Column(
           children: <Widget>[animationWrapper,
             Container(child: btn, margin: EdgeInsets.symmetric(vertical: 20),)],
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.center,
         ),
       ),
     );
@@ -69,41 +62,40 @@ class MyHomePage extends StatelessWidget {
 
 class _AnimationWrapper extends StatefulWidget {
   final GlobalKey<_AnimationWrapperState> _key;
-  Alignment _alignment;
+  double _opacity;
 
-  _AnimationWrapper(this._key, this._alignment): super (key: _key);
+  _AnimationWrapper(this._key, this._opacity): super (key: _key);
 
   @override
   State<StatefulWidget> createState() => _AnimationWrapperState();
 
-  setAlignment(Alignment alignment) {
-    _key.currentState.setAlignment(alignment);
+  setOpacity(double opacity) {
+    _key.currentState.setOpacity(opacity);
   }
 }
 
 class _AnimationWrapperState extends State<_AnimationWrapper> {
   @override
   Widget build(BuildContext context) {
-    var w = Expanded(
-      child: AnimatedContainer(
-        duration: Duration(seconds: 3),
-        curve: Curves.fastOutSlowIn,
-        child: Icon(Icons.airplanemode_active, color: Colors.lightBlue, size: 50),
-        alignment: widget._alignment,
-        onEnd: () {
-          setState(() {
-            widget._alignment = Alignment.bottomCenter;
-          });
-        },
+    var w = AnimatedOpacity(
+      child: Text(
+        'Flutter動畫',
+        style: TextStyle(fontSize: 30),
       ),
+      duration: Duration(seconds: 1),
+      opacity: widget._opacity,
+      onEnd: () =>
+        setState(() {
+          widget._opacity = 1.0;
+        }),
     );
 
     return w;
   }
 
-  setAlignment(Alignment alignment) {
+  setOpacity(double opacity) {
     setState(() {
-      widget._alignment = alignment;
+      widget._opacity = opacity;
     });
   }
 }
